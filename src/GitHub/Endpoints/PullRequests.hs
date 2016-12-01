@@ -40,6 +40,14 @@ pullRequestsFor :: Name Owner -> Name Repo -> IO (Either Error (Vector SimplePul
 pullRequestsFor user repo =
     executeRequest' $ pullRequestsForR user repo mempty FetchAll
 
+-- | All open pull requests for the repo, by owner and repo name.
+-- With authentication.
+--
+-- > pullRequestsFor' (Just ("github-username", "github-password")) "rails" "rails"
+pullRequestsFor' :: Auth Name Owner -> Name Repo -> IO (Either Error (Vector SimplePullRequest))
+pullRequestsFor' auth user repo =
+    executeRequest auth $ pullRequestsForR user repo mempty FetchAll
+
 -- | List pull requests.
 -- See <https://developer.github.com/v3/pulls/#list-pull-requests>
 pullRequestsForR
@@ -51,6 +59,19 @@ pullRequestsForR
 pullRequestsForR user repo opts = pagedQuery
     ["repos", toPathPart user, toPathPart repo, "pulls"]
     (prModToQueryString opts)
+
+-- | List pull requests.
+-- With authentication.
+-- See <https://developer.github.com/v3/pulls/#list-pull-requests>
+pullRequestsForR'
+    :: Auth
+    -> Name Owner
+    -> Name Repo
+    -> PullRequestMod
+    -> FetchCount
+    -> Request k (Vector SimplePullRequest)
+pullRequestsForR' auth user repo opts =
+    executeRequest auth $ pullRequestsForR user repo opts FetchAll
 
 -- | A detailed pull request, which has much more information. This takes the
 -- repo owner and name along with the number assigned to the pull request.
