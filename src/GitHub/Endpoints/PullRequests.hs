@@ -54,7 +54,7 @@ pullRequestsForR user repo opts = pagedQuery
 
 -- | A detailed pull request, which has much more information. This takes the
 -- repo owner and name along with the number assigned to the pull request.
--- With authentification.
+-- With authentication.
 --
 -- > pullRequest' (Just ("github-username", "github-password")) "thoughtbot" "paperclip" 562
 pullRequest' :: Maybe Auth -> Name Owner -> Name Repo -> Id PullRequest -> IO (Either Error PullRequest)
@@ -108,7 +108,7 @@ updatePullRequestR user repo prid epr =
 
 -- | All the commits on a pull request, given the repo owner, repo name, and
 -- the number of the pull request.
--- With authentification.
+-- With authentication.
 --
 -- > pullRequestCommits' (Just ("github-username", "github-password")) "thoughtbot" "paperclip" 688
 pullRequestCommits' :: Maybe Auth -> Name Owner -> Name Repo -> Id PullRequest -> IO (Either Error (Vector Commit))
@@ -130,7 +130,7 @@ pullRequestCommitsR user repo prid =
 
 -- | The individual files that a pull request patches. Takes the repo owner and
 -- name, plus the number assigned to the pull request.
--- With authentification.
+-- With authentication.
 --
 -- > pullRequestFiles' (Just ("github-username", "github-password")) "thoughtbot" "paperclip" 688
 pullRequestFiles' :: Maybe Auth -> Name Owner -> Name Repo -> Id PullRequest -> IO (Either Error (Vector File))
